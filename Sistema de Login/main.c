@@ -79,6 +79,7 @@ void login(struct Login contas[], int *numContas) {
     char nome[25];
     char senha[15];
     int escolha;
+    char decisao;
     printf("---Login---\n");
     printf("Digite o nome de usuario: ");
     scanf("%s", nome);
@@ -93,20 +94,52 @@ void login(struct Login contas[], int *numContas) {
                     printf("O que deseja fazer hoje?\n");
                     do
                     {
-                        printf("1. Escrever mensagem.n");
-                        printf("2. Visualizar mensagem.\n");
-                        printf("3. Editar mensagem.\n");
-                        printf("4. Apagar conta.\n");
-                        printf("5. Sair.\n");
+                        printf("1. Conte um segredo.\n");
+                        printf("2. Visualizar segredo.\n");
+                        printf("3. Apagar conta.\n");
+                        printf("4. Sair.\n");
                         scanf("%d", &escolha);
-                        
-                    } while (escolha != 5);
+
+                        switch (escolha)
+                        {
+                        case 1:
+                            printf("Digite a mensagem(apenas):\n");
+                            scanf(" %[ ^\n]s", contas[i].mensagem);
+                            break;
+                        case 2:
+                            if (contas[i].mensagem == NULL) {
+                                printf("Aqui esta meio vazio...\n");
+                            }
+                            else {
+                                printf("%s", contas[i].mensagem);
+                            }
+                            break;
+                        case 3:
+                            printf("Tem certeza que deseja deletar a conta?(y/n) ");
+                            scanf("%c", &decisao);
+                            if (decisao == 'y') {
+                                for (int j = i; j < *numContas - 1; j++) {
+                                    contas[j] = contas[j + 1];
+                                }
+                                (*numContas)--;
+                                printf("Conta apagada com sucessso!\n");
+                                return;
+                            }
+                            break;
+                        case 4:
+                            printf("Voltando ao menu...");
+                            return;
+                            break;
+                        default:
+                            printf("Opcao invalida!\n");
+                            break;
+                        }
+
+                    } while (escolha != 4);
                 
                 }
                 printf("Senha incorreta!\n");
             } while (strcmp(contas[i].senha, senha) != 0);
-            
-            
             
         }
     }
